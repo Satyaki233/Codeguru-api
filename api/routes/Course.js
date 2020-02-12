@@ -60,9 +60,9 @@ router.get('/',(req,res,next)=>{
 router.get('/:id',(req,res)=>{
    
    console.log(req.params.id);
-   knex.raw('select * from course order by id = ?',req.params.id)
+   knex.raw('select * from course where id = ?',req.params.id)
      .then(data =>{
-       res.json(data.rows[0]);
+       res.json(data.rows);
      })
 })
 
