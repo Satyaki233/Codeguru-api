@@ -49,8 +49,9 @@ const knex = require('knex')({
  
 
 router.get('/',(req,res,next)=>{
-  knex.select('*').table('course').then(data =>{
-       res.json(data);
+  knex.raw('select * from course order by id desc')
+  .then(data =>{
+       res.json(data.rows);
 
   });
        
@@ -59,7 +60,7 @@ router.get('/',(req,res,next)=>{
 router.get('/:id',(req,res)=>{
    
    console.log(req.params.id);
-   knex.raw('select * from course where id = ?',req.params.id)
+   knex.raw('select * from course order by id = ?',req.params.id)
      .then(data =>{
        res.json(data.rows[0]);
      })
@@ -68,12 +69,13 @@ router.get('/:id',(req,res)=>{
 
 router.post('/',upload.single('image'),(req,res,next)=>{
   console.log(req.file);
-   const {title ,intro ,describtion }= req.body;
+   const {title ,intro ,price ,describtion }= req.body;
    console.log( title);  
    knex('course').returning('*').insert({
        title:title,
        intro: intro,
        image:req.file.path,
+       price: price,
        describtion: describtion
    }).then(response =>{
        res.json(response);

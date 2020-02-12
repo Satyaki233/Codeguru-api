@@ -11,6 +11,7 @@ const User = require('./api/routes/User');
 
 require('dotenv').config();
 app.use(bodyParser.json());
+app.use(cors());
 app.use('/uploads',express.static('uploads'));
 app.use(morgan('dev'));
 
@@ -38,8 +39,9 @@ knex.schema.hasTable('course').then(function(exists) {
       return knex.schema.createTable('course', function(t) {
         t.increments('id').primary();
         t.string('title', 100);
-        t.string('intro', 100);
+        t.text('intro');
         t.string('image', 255);
+        t.string('price',100);
         t.text('describtion');
       });
     }
