@@ -24,7 +24,9 @@ app.use(cors());
 
 router.post('/login',(req,res)=>{
 
-    // console.log(req.body.email);
+    
+
+
     knex.select('email','password').from('users')
     .where('email','=' , req.body.email)
     .then(data =>{
@@ -37,8 +39,11 @@ router.post('/login',(req,res)=>{
                 
             } )
             .catch(err => res.status(400).json('Not found'));
+        }else{
+            res.status(400).json('wrong password')
         }
     })
+    .catch(err => { res.status(400).json('unable to Login')})
 })
 
 
