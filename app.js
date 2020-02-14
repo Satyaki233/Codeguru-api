@@ -8,6 +8,7 @@ const cors = require('cors');
 const app = express();
 const course = require('./api/routes/Course');
 const User = require('./api/routes/User');
+const Admin = require('./api/routes/Admin');
 
 require('dotenv').config();
 app.use(bodyParser.json());
@@ -71,6 +72,20 @@ knex.schema.hasTable('course').then(function(exists) {
     }
   });
 
+  //4.Admin table:-
+
+  knex.schema.hasTable('admin').then(function(exists) {
+    if (!exists) {
+      return knex.schema.createTable('admin', function(t) {
+        t.increments('id').primary();
+        t.string('username', 30);
+        t.string('email', 50);
+        t.string('password',255);
+        t.timestamp('joined').defaultTo(knex.fn.now());
+      });
+    }
+  });
+
 
   
 
@@ -78,6 +93,7 @@ knex.schema.hasTable('course').then(function(exists) {
 
 app.use('/course',course);
 app.use('/User',User);
+app.use('/Admin',Admin);
 
 app.listen(process.env.PORT ,()=>{
     
