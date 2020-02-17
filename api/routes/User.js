@@ -80,6 +80,15 @@ router.post('/register',(req,res,next)=>{
     
 })
 
+router.get('/',(req,res)=>{
+    knex.raw('select * from register')
+    .then(data=>{
+        res.status(200).json(data.rows)
+    }).catch(err =>{
+        res.json(err);
+    })
+})
+
 
 
 

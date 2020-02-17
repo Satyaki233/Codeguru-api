@@ -79,6 +79,8 @@ router.post('/',upload.single('image'),(req,res,next)=>{
        describtion: describtion
    }).then(response =>{
        res.json(response);
+   }).catch(err=>{
+    res.json(err)
    })
    
 })
@@ -93,7 +95,9 @@ router.delete('/:id',(req,res,next)=>{
      res.json('no such file exists');
    }else{
     fs.unlink(data[0].image, function (err) {
-      if (err) throw err;
+      if(err){
+        console.log(err)
+      }
       console.log('File deleted!');
     })
     console.log(data[0].id)

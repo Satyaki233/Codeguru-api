@@ -48,5 +48,29 @@ router.post('/',(req,res)=>{
 
    })
 
+router.post('/Login/:password',(req,res)=>{
+    const { password }= req.params;
+    const { email , username }=req.body;
+    knex('admin').select('*').where('email',email)
+    .then(data =>{
+      const isValid= bcrypt.compareSync(password, data[0].password)
+          if(isValid){
+            knex('admin').select('email').where('email',email)
+            .then(data=>{
+              res.json(data)
+            })
+            .catch(err =>{
+              res.json(err)
+            })
+          }else{
+            res.json('wrong password')
+          }
+
+    })
+    .catch(err =>{
+      res.json('Wrong email is given');
+    })
+})
+
 
  module.exports = router;

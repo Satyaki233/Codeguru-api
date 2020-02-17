@@ -9,6 +9,7 @@ const app = express();
 const course = require('./api/routes/Course');
 const User = require('./api/routes/User');
 const Admin = require('./api/routes/Admin');
+const Cart = require('./api/routes/Cart');
 
 require('dotenv').config();
 app.use(bodyParser.json());
@@ -31,7 +32,6 @@ const knex = require('knex')({
  
 
 
-
 //CREATE TABLES IN DATABASE..........................
 
 //1 Course database
@@ -42,7 +42,7 @@ knex.schema.hasTable('course').then(function(exists) {
         t.string('title', 100);
         t.text('intro');
         t.string('image', 255);
-        t.string('price',100);
+        t.integer('price');
         t.text('describtion');
       });
     }
@@ -86,6 +86,18 @@ knex.schema.hasTable('course').then(function(exists) {
     }
   });
 
+  //5. Cart Table....
+   knex.schema.hasTable('cart').then(function(exists) {
+    if (!exists) {
+      return knex.schema.createTable('cart', function(t) {
+        t.increments('id').primary();
+        t.integer('userid');
+        t.integer('courseid');
+        
+      });
+    }
+  });
+
 
   
 
@@ -94,6 +106,7 @@ knex.schema.hasTable('course').then(function(exists) {
 app.use('/course',course);
 app.use('/User',User);
 app.use('/Admin',Admin);
+app.use('/Cart',Cart);
 
 app.listen(process.env.PORT ,()=>{
     
