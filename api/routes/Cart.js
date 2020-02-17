@@ -57,9 +57,33 @@ router.post('/',(req,res)=>{
 	.then(data =>{
 		res.json(data)
 	})
-
-
 })
+
+  router.post('/delete/:courseid',(req,res)=>{
+    var i=0;
+    const {userid }= req.body;
+    const {courseid}=req.params;    
+
+     knex('cart')
+     .where({
+    courseid :courseid,
+    userid: userid
+       
+    })
+    .del()
+    .returning('*')
+   .then(data=>{
+    res.json('deleted')
+   })
+   .catch(err=>{
+    res.json(err)
+   })
+
+    
+  })
+
+
+
 
 
 module.exports = router;
