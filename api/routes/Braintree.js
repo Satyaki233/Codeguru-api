@@ -32,7 +32,7 @@ const knex = require('knex')({
             if(err){
                 res.json(err)
             }else{
-                res.json(response.clientToken)
+                res.status(200).json(response.clientToken)
             }
            });}
        

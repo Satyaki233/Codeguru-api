@@ -84,6 +84,29 @@ router.post('/',(req,res)=>{
   })
 
 
+  router.post('/emptyCart/:userid',(req,res)=>{
+    var i=0;
+    const {userid }= req.params;
+    // const {courseid}=req.params;    
+
+     knex('cart')
+     .where({
+   
+    userid: userid
+       
+    })
+    .del()
+    .returning('*')
+   .then(data=>{
+    res.json('deleted')
+   })
+   .catch(err=>{
+    res.json(err)
+   })
+
+    
+  })
+
 
 
 
