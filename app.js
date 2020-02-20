@@ -10,6 +10,7 @@ const course = require('./api/routes/Course');
 const User = require('./api/routes/User');
 const Admin = require('./api/routes/Admin');
 const Cart = require('./api/routes/Cart');
+const Braintree = require('./api/routes/Braintree');
 
 require('dotenv').config();
 app.use(bodyParser.json());
@@ -107,8 +108,10 @@ app.use('/course',course);
 app.use('/User',User);
 app.use('/Admin',Admin);
 app.use('/Cart',Cart);
+app.use('/Braintree',Braintree);
 
 app.listen(process.env.PORT ,()=>{
     
  console.log(`Server is running on the PORT = ${process.env.PORT}`);
  })
+ 
