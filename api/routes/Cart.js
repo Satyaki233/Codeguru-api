@@ -33,7 +33,8 @@ router.post('/:courseid',(req,res)=>{
         .returning('*')
         .insert({
           courseid: req.params.courseid,
-          userid: req.body.userid
+          userid: req.body.userid,
+          buy: 0
         })
         .then( data =>{
           res.status(200).json(data);
@@ -54,10 +55,15 @@ router.post('/',(req,res)=>{
 	knex.select('*')
 	.from('cart')
 	.fullOuterJoin('course', 'cart.courseid', 'course.id')
-	.where('userid',userid)
+	.where({
+    userid: userid,
+    buy: 0
+  })
 	.then(data =>{
 		res.json(data)
-	})
+	}).catch(err=>{
+    res.json(err)
+  })
 })
 
   router.post('/delete/:courseid',(req,res)=>{
@@ -83,6 +89,40 @@ router.post('/',(req,res)=>{
     
   })
 
+  router.get('/Buy/:userid',(req,res)=>{
+       const {userid}=req.params;
+       knex('cart')
+       .returning('*')
+       .fullOuterJoin('course', 'cart.courseid', 'course.id')
+       .where({
+         userid:userid,
+         buy:1
+       })
+       .then(data =>{
+         res.status(200).json(data)
+       })
+       .catch(err=>{
+         res.status(400).json(err)
+       })
+  })
+
+  router.get('/Buy',(req,res)=>{
+    const {userid}=req.params;
+    knex('cart')
+    .returning('*')
+    .fullOuterJoin('course', 'cart.courseid', 'course.id')
+    .where({
+      
+      buy:1
+    })
+    .then(data =>{
+      res.status(200).json(data)
+    })
+    .catch(err=>{
+      res.status(400).json(err)
+    })
+})
+
 
   router.post('/emptyCart/:userid',(req,res)=>{
     var i=0;
@@ -102,6 +142,31 @@ router.post('/',(req,res)=>{
    })
    .catch(err=>{
     res.json(err)
+   })
+
+    
+  })
+
+  router.post('/Checkout/:userid',(req,res)=>{
+    var i=0;
+    const {userid }= req.params;
+    // const {courseid}=req.params;    
+
+     knex('cart')
+     .where({
+   
+    userid: userid
+       
+    })
+    .update({
+      buy : 1
+    })
+    .returning('*')
+   .then(data=>{
+    res.json(data)
+   })
+   .catch(err=>{
+    res.status(400).json(err)
    })
 
     

@@ -94,6 +94,7 @@ knex.schema.hasTable('course').then(function(exists) {
         t.increments('id').primary();
         t.integer('userid');
         t.integer('courseid');
+        t.integer('buy');
         
       });
     }
