@@ -14,7 +14,7 @@ const knex = require('knex')({
   });
 
 router.get('/',(req,res)=>{
-    knex.raw('select * from feeds')
+    knex.raw('select * from feeds order by id DESC')
     .then(data=>{
         res.json(data.rows)
     })
@@ -27,7 +27,7 @@ router.post('/:userid',(req,res)=>{
     knex('feeds')
     .returning('*')
     .insert({
-        username:req.params.userid,
+        username:req.body.username,
         email:req.body.email,
         feeds: req.body.feeds,
         joined: new Date()
