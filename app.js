@@ -11,6 +11,7 @@ const User = require('./api/routes/User');
 const Admin = require('./api/routes/Admin');
 const Cart = require('./api/routes/Cart');
 const Braintree = require('./api/routes/Braintree');
+const Feeds = require ('./api/routes/Feeds')
 
 require('dotenv').config();
 app.use(bodyParser.json());
@@ -30,7 +31,7 @@ const knex = require('knex')({
     }
   });
 
- 
+ module.exports = knex;
 
 
 //CREATE TABLES IN DATABASE..........................
@@ -99,7 +100,20 @@ knex.schema.hasTable('course').then(function(exists) {
       });
     }
   });
-
+  //6..FeedBack Table..........
+  knex.schema.hasTable('feeds').then(function(exists) {
+    if (!exists) {
+      return knex.schema.createTable('feeds', function(t) {
+        t.increments('id').primary(); 
+        t.string('username', 30);
+        t.string('email', 50);      
+        t.text('feeds');
+        t.timestamp('joined').defaultTo(knex.fn.now());
+       
+       
+      });
+    }
+  });
 
   
 
@@ -110,6 +124,7 @@ app.use('/User',User);
 app.use('/Admin',Admin);
 app.use('/Cart',Cart);
 app.use('/Braintree',Braintree);
+app.use('/Feeds',Feeds);
 
 app.listen(process.env.PORT ,()=>{
     
