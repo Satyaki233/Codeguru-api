@@ -118,7 +118,7 @@ knex.schema.hasTable('course').then(function(exists) {
   
 
 
-
+app.get('/',(req,res)=>{res.json({message:"You have successfully creating app"})})
 app.use('/course',course);
 app.use('/User',User);
 app.use('/Admin',Admin);
@@ -126,7 +126,7 @@ app.use('/Cart',Cart);
 app.use('/Braintree',Braintree);
 app.use('/Feeds',Feeds);
 
-app.listen(process.env.PORT ,()=>{
+app.listen(process.env.PORT || '8000',()=>{
     
  console.log(`Server is running on the PORT = ${process.env.PORT}`);
  })
